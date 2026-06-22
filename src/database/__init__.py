@@ -1,14 +1,18 @@
-from .base import Base
+from .base import Base, M2M
 from .init import create_database
 from .session import get_session
 from .mixin import CreatedAtUpdatedAtMixin
 from .enums import (
     UserStatus,
-    ProjectStatus
+    UserRoles,
+    ProjectStatus,
+    TaskStatus,
+    TaskPriority
 )
 __all__ = [
     # from base.py
     'Base',
+    'M2M',
 
     # from init.py
     'create_database',
@@ -21,6 +25,9 @@ __all__ = [
 
     # from enums.py
     'UserStatus',
-    'ProjectStatus'
+    'UserRoles',
+    'ProjectStatus',
+    'TaskStatus',
+    'TaskPriority',
 
 ]

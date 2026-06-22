@@ -1,3 +1,4 @@
+from typing import TYPE_CHECKING
 from sqlalchemy import String, Boolean, Enum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from uuid import (
@@ -9,7 +10,12 @@ from src.database import Base
 from src.database import CreatedAtUpdatedAtMixin
 from src.database import UserStatus
 
-from src.modules.project import Project
+if TYPE_CHECKING:
+    from src.modules.team import Team
+    from src.modules.team_members import TeamMember
+    from src.modules.project import Project
+    from src.modules.task import Task
+
 
 class User(Base, CreatedAtUpdatedAtMixin):
     __tablename__ = 'users'
@@ -35,7 +41,37 @@ class User(Base, CreatedAtUpdatedAtMixin):
     # ======================
     # === RELATIONSHIPS ====
     # ======================
+    
     projects_established: Mapped[list['Project']] = relationship(
+        'Project',
         back_populates='created_by',
         foreign_keys='Project.creator_id'
+    )
+    
+
+    teams_established: Mapped[list['Team']] = relationship(
+        'Team',
+        back_populates='created_by',
+        foreign_keys='Team.creator_id'
+    )
+
+    teams_memberships: Mapped[list[TeamMember]] = relationship(
+        'TeamMember',
+        back_populates='member',
+        foreign_keys='TeamMember.member_id',
+        cascade='all, delete-orphan'
+    )
+
+
+    
+    tasks_established: Mapped[list['Task']] = relationship(
+        'Task',
+        back_populates='created_by',
+        foreign_keys='Task.creator_id'
+    )
+
+    tasks_assigned: Mapped[list['Task']] = relationship(
+        'Task',
+        back_populates='assignee_to',
+        foreign_keys='Task.assignee_to_id'
     )

@@ -1,6 +1,6 @@
-from sqlalchemy import String, Boolean, Enum, DateTime, ForeignKey
+from typing import TYPE_CHECKING
+from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from datetime import datetime
 from uuid import (
     UUID as ID,
     uuid4 as id4
@@ -9,8 +9,12 @@ from uuid import (
 from src.database import Base
 from src.database import CreatedAtUpdatedAtMixin
 
-from src.modules.user import User
-from src.modules.project import Project
+
+if TYPE_CHECKING:
+    from src.modules.team_members import TeamMember
+    from src.modules.user import User
+    from src.modules.project import Project
+
 
 class Team(Base, CreatedAtUpdatedAtMixin):
     __tablename__ = 'teams'
@@ -29,15 +33,21 @@ class Team(Base, CreatedAtUpdatedAtMixin):
     creator_id: Mapped[ID] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
 
     created_by: Mapped['User'] = relationship(
+        'User',
         back_populates='teams_established',
         foreign_keys=[creator_id]
     )
 
 
-    project_id: Mapped[ID] = mapped_column(ForeignKey('project.id', ondelete='CASCADE'))
-    
-    project: Mapped['Project'] = relationship(
+    projects: Mapped[list['Project']] = relationship(
+        'Project',
         back_populates='team',
-        foreign_keys=[project_id],
+        foreign_keys=['Project.team_id']
+    )
+
+    
+    members: Mapped[list['TeamMember']] = relationship(
+        'TeamMember',
+        back_populates='team',
         cascade='all, delete-orphan'
     )
