@@ -26,7 +26,8 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     On shutdown: Closes the database engine.
     """
     async with async_engine.begin() as conn:
-        # For MVP, create all tables. In production, use Alembic.
+        # انشاء الجداول بهي الطريقة للنسخة التجريبية فقط (MVB)
+        # بعدين لازم نعملها باستخدام (Alembic)
         await conn.run_sync(Base.metadata.create_all)
     
     yield
@@ -44,7 +45,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Hardcoded fallback because CORS_ORIGINS is not in settings
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -88,9 +89,8 @@ app.include_router(api_router)
 
 
 if __name__ == "__main__":
-    import uvicorn
-    # Allows starting the server directly via `python src/main.py`
-    uvicorn.run(
+    from uvicorn import run
+    run(
         "src.main:app",
         host=settings.HOST,
         port=settings.PORT,
