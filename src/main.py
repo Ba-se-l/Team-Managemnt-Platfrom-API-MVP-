@@ -13,7 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from typing import AsyncGenerator
 
 from src.conf import settings
-from src.database.engine import async_engine, Base
+from src.database.engine import async_engine, Base, create_database
 from src.core.exceptions import AppException
 from src.modules import api_router
 
@@ -26,9 +26,15 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     they don't already exist.
     On shutdown: Closes the database engine.
     """
-    async with async_engine.begin() as conn:
-        # For MVP, create all tables. In production, use Alembic.
-        await conn.run_sync(Base.metadata.create_all)
+    
+    # للتجربة هون بس منستخدم هي الدالة (create_database) | لازم نستخدم (Alembic)
+    await create_database()
+
+    """
+    async with async_engine.begin() as async_connection:
+        await async_connection.run_sync(Base.metadata.create_all)
+    """
+
     
     yield
 
@@ -45,7 +51,7 @@ app = FastAPI(
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Hardcoded fallback because CORS_ORIGINS is not in settings
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
