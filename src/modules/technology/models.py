@@ -1,10 +1,7 @@
 from typing import TYPE_CHECKING
-from sqlalchemy import String
+from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from uuid import (
-    UUID as ID,
-    uuid4 as id4
-)
+
 
 from src.database import Base, CreatedAtUpdatedAtMixin
 from src.modules.m2m import ProjectsTechnologies
@@ -19,7 +16,7 @@ class Technology(Base, CreatedAtUpdatedAtMixin):
     # ==== MAIN COLUMNS ====
     # ======================
 
-    id: Mapped[ID] = mapped_column(primary_key=True, default=id4)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
     
     name: Mapped[str] = mapped_column(String, nullable=False, unique=True)
 

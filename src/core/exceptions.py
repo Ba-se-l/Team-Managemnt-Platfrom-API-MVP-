@@ -121,3 +121,18 @@ class InvalidCredentialsException(AppException):
             error_code="INVALID_CREDENTIALS",
             status_code=401,
         )
+
+
+class TokenRevokedException(AppException):
+    """Raised when a refresh token has been revoked or does not exist.
+
+    Produces HTTP ``401 Unauthorized``.
+    """
+
+    def __init__(self):
+        """Initializes the token-revoked exception."""
+        super().__init__(
+            message="Refresh token has been revoked or is invalid.",
+            error_code="TOKEN_REVOKED",
+            status_code=401,
+        )

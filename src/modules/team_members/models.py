@@ -1,9 +1,7 @@
 from typing import TYPE_CHECKING
 from sqlalchemy import Enum, ForeignKey, Boolean, DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from uuid import (
-    UUID as ID
-)
+
 from datetime import datetime
 
 from src.database import Base, UserRoles
@@ -18,9 +16,9 @@ class TeamMember(Base):
     # ======================
     # === RELATIONSHIPS ====
     # ======================
-    member_id: Mapped[ID] = mapped_column(ForeignKey('users.id', ondelete='CASCADE'), primary_key=True)
+    member_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete='CASCADE'), primary_key=True)
 
-    team_id: Mapped[ID] = mapped_column(ForeignKey('teams.id', ondelete='CASCADE'), primary_key=True)
+    team_id: Mapped[int] = mapped_column(ForeignKey('teams.id', ondelete='CASCADE'), primary_key=True)
 
     role: Mapped[UserRoles] = mapped_column(Enum(UserRoles), nullable=False)
 

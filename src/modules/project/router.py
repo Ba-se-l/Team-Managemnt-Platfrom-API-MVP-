@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID as ID
 from typing import Annotated
 
+from src.conf import settings
 from src.database import get_session
 from src.modules.auth.dependencies import get_current_user
 from src.modules.user import User
@@ -17,8 +18,8 @@ from .schemas import CreateProjectRequest, UpdateProjectRequest, ProjectResponse
 from . import service
 
 # We use two routers here: one nested under teams, one top-level.
-team_nested_router = APIRouter(prefix="/api/v1/teams/{team_id}/projects", tags=["Projects"])
-top_level_router = APIRouter(prefix="/api/v1/projects", tags=["Projects"])
+team_nested_router = APIRouter(prefix="{prefix}/teams/{team_id}/projects".format(prefix=settings.API_PREFIX), tags=["Projects"])
+top_level_router = APIRouter(prefix="{prefix}/projects".format(prefix=settings.API_PREFIX), tags=["Projects"])
 
 
 @team_nested_router.post(

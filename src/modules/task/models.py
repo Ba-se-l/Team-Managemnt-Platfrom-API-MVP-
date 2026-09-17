@@ -1,11 +1,8 @@
 
 from typing import TYPE_CHECKING
-from sqlalchemy import String, Enum, ForeignKey, DateTime, Boolean
+from sqlalchemy import Integer, String, Enum, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from uuid import (
-    UUID as ID,
-    uuid4 as id4
-)
+
 from datetime import datetime
 
 
@@ -26,7 +23,7 @@ class Task(Base, CreatedAtUpdatedAtMixin):
     # ======================
     # ==== MAIN COLUMNS ====
     # ======================
-    id: Mapped[ID] = mapped_column(primary_key=True, default=id4)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
     title: Mapped[str] = mapped_column(String, nullable=False)
 
@@ -47,7 +44,7 @@ class Task(Base, CreatedAtUpdatedAtMixin):
     # ======================
     # === RELATIONSHIPS ====
     # ======================
-    creator_id: Mapped[ID | None] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
+    creator_id: Mapped[int | None] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
 
     created_by: Mapped['User'] = relationship(
         'User',
@@ -56,7 +53,7 @@ class Task(Base, CreatedAtUpdatedAtMixin):
     )
 
 
-    assignee_to_id: Mapped[ID | None] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
+    assignee_to_id: Mapped[int | None] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
 
     assignee_to: Mapped['User'] = relationship(
         'User',

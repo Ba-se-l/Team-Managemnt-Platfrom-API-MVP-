@@ -1,7 +1,7 @@
 from typing import TypeVar, Generic, Sequence, Any
+from datetime import datetime, timezone
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from uuid import UUID as ID
 
 from src.database.base import Base
 
@@ -30,7 +30,7 @@ class BaseRepository(Generic[_MT]):
         self.session = session
 
     
-    async def get_by_id(self, id: ID) -> _MT | None:
+    async def get_by_id(self, id: int) -> _MT | None:
         """
         Retrieves a single database record by its primary key `UUID`.
 
@@ -112,6 +112,10 @@ class BaseRepository(Generic[_MT]):
         Returns:
             _MT: The updated and refreshed model instance.
         """
+
+        if hasattr(orm_model, 'updated_at'):
+            if 'updated_at' not in update_data:
+                update_data['updated_at'] = datetime.now(timezone.utc)
 
         for key, value in update_data.items():
             setattr(orm_model, key, value)

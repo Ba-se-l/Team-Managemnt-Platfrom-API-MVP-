@@ -10,14 +10,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID as ID
 from typing import Annotated
 
+from src.conf import settings
 from src.database import get_session
 from src.modules.auth.dependencies import get_current_user
 from src.modules.user import User
 from .schemas import CreateTaskRequest, UpdateTasksRequest, TaskResponse
 from . import service
 
-project_nested_router = APIRouter(prefix="/api/v1/projects/{project_id}/tasks", tags=["Tasks"])
-top_level_router = APIRouter(prefix="/api/v1/tasks", tags=["Tasks"])
+project_nested_router = APIRouter(prefix="{prefix}/projects/{project_id}/tasks".format(prefix=settings.API_PREFIX), tags=["Tasks"])
+top_level_router = APIRouter(prefix="{prefix}/tasks".format(prefix=settings.API_PREFIX), tags=["Tasks"])
 
 
 @project_nested_router.post(

@@ -8,13 +8,15 @@ from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 
+
+from src.conf import settings
 from src.database import get_session
 from src.modules.auth.dependencies import get_current_user
 from .models import User
 from .schemas import UserResponse, UpdateSchemaRequest, ChangePasswordRequest
 from . import service
 
-router = APIRouter(prefix="/api/v1/users", tags=["Users"])
+router = APIRouter(prefix=f"{settings.API_PREFIX}/users", tags=["Users"])
 
 
 @router.get(

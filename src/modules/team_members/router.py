@@ -9,13 +9,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID as ID
 from typing import Annotated
 
+from src.conf import settings
 from src.database import get_session
 from src.modules.auth.dependencies import get_current_user
 from src.modules.user import User
 from .schemas import AddMemberRequest, UpdateMemberRoleRequest, MemberResponse
 from . import service
 
-router = APIRouter(prefix="/api/v1/teams/{team_id}/members", tags=["Team Members"])
+router = APIRouter(prefix="{prefix}/teams/{team_id}/members".format(prefix=settings.API_PREFIX), tags=["Team Members"])
 
 
 @router.post(

@@ -1,10 +1,7 @@
 from typing import TYPE_CHECKING
-from sqlalchemy import String, ForeignKey, Boolean
+from sqlalchemy import Integer, String, ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from uuid import (
-    UUID as ID,
-    uuid4 as id4
-)
+
 
 from src.database import Base
 from src.database import CreatedAtUpdatedAtMixin
@@ -22,7 +19,7 @@ class Team(Base, CreatedAtUpdatedAtMixin):
     # ======================
     # ==== MAIN COLUMNS ====
     # ======================
-    id: Mapped[ID] = mapped_column(primary_key=True, default=id4)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
     name: Mapped[str] = mapped_column(String, nullable=False)
 
@@ -34,7 +31,7 @@ class Team(Base, CreatedAtUpdatedAtMixin):
     # ======================
     # === RELATIONSHIPS ====
     # ======================
-    creator_id: Mapped[ID | None] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
+    creator_id: Mapped[int | None] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
 
     created_by: Mapped['User'] = relationship(
         'User',

@@ -14,17 +14,16 @@ from typing import TYPE_CHECKING
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
-from uuid import UUID as ID
 
-from src.database.session import get_session
-from src.core.security import decode_access_token
-from src.core.exceptions import InvalidCredentialsException
+from src.database import get_session
+from src.core import decode_access_token, InvalidCredentialsException
+from src.conf import settings
 
 if TYPE_CHECKING:
-    from src.modules.user.models import User
+    from src.modules.user import User
 
 
-_oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/api/v1/auth/login')
+_oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f'{settings.API_PREFIX}/auth/login')
 
 
 async def get_current_user(
@@ -58,11 +57,11 @@ async def get_current_user(
         raise InvalidCredentialsException()
 
     # Lazy import to break module-level circular dependency
-    from src.modules.user.repository import UserRepository
+    from src.modules.user import UserRepository
     
     # Step 2: Fetch the user from the database
     user_repo = UserRepository(session=session)
-    user = await user_repo.get_by_id(ID(user_id))
+    user = await user_repo.get_by_id(int(user_id))
 
     if user is None:
         raise InvalidCredentialsException()

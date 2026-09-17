@@ -1,11 +1,8 @@
 from typing import TYPE_CHECKING
-from sqlalchemy import String, Boolean, Enum, DateTime, ForeignKey
+from sqlalchemy import Integer, String, Boolean, Enum, DateTime, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
-from uuid import (
-    UUID as ID,
-    uuid4 as id4
-)
+
 
 from src.database import Base
 from src.database import CreatedAtUpdatedAtMixin
@@ -25,7 +22,7 @@ class Project(Base, CreatedAtUpdatedAtMixin):
     # ======================
     # ==== MAIN COLUMNS ====
     # ======================
-    id: Mapped[ID] = mapped_column(primary_key=True, default=id4)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
 
     title: Mapped[str] = mapped_column(String, nullable=False)
 
@@ -46,7 +43,7 @@ class Project(Base, CreatedAtUpdatedAtMixin):
     # ======================
     # === RELATIONSHIPS ====
     # ======================
-    creator_id: Mapped[ID | None] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
+    creator_id: Mapped[int | None] = mapped_column(ForeignKey('users.id', ondelete='SET NULL'))
 
     created_by: Mapped['User'] = relationship(
         'User',
@@ -55,7 +52,7 @@ class Project(Base, CreatedAtUpdatedAtMixin):
     )
 
 
-    team_id: Mapped[ID | None] = mapped_column(ForeignKey('teams.id', ondelete='SET NULL'))
+    team_id: Mapped[int | None] = mapped_column(ForeignKey('teams.id', ondelete='SET NULL'))
     
     team: Mapped['Team'] = relationship(
         'Team',
