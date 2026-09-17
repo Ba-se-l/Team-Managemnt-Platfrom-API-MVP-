@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
-from uuid import UUID as ID
+
 
 from src.database import ProjectStatus
 
@@ -25,17 +25,17 @@ class UpdateProjectRequest(BaseModel):
 class ProjectResponse(BaseModel):
     """Schema for Project data in API response."""
 
-    # To enable ORM validate -> ModelClass.model_validate(orm_instance)
+    # To enable ORM valintate -> ModelClass.model_valintate(orm_instance)
     model_config = ConfigDict(from_attributes=True)
 
-    id: ID
+    id: int
     title: str
     short_description: str
     is_active: bool
     status: ProjectStatus
     deadline: datetime | None
     released_at: datetime | None
-    creator_id: ID | None
-    team_id: ID | None
+    creator_int: int | None
+    team_int: int | None
     created_at: datetime
     updated_at: datetime

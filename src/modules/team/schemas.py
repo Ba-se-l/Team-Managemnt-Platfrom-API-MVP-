@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
-from uuid import UUID as ID
+
 
 class CreateTeamRequest(BaseModel):
 
@@ -20,10 +20,10 @@ class TeamResponse(BaseModel):
     # To enable ORM validate -> ModelClass.model_validate(orm_instance)
     model_config = ConfigDict(from_attributes=True)
 
-    id: ID
+    id: int 
     name: str
     description: str | None
     is_active: bool
-    creator_id: ID | None
+    creator_id: int | None
     created_at: datetime
     updated_at: datetime

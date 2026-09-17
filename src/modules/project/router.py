@@ -18,8 +18,8 @@ from .schemas import CreateProjectRequest, UpdateProjectRequest, ProjectResponse
 from . import service
 
 # We use two routers here: one nested under teams, one top-level.
-team_nested_router = APIRouter(prefix="{prefix}/teams/{team_id}/projects".format(prefix=settings.API_PREFIX), tags=["Projects"])
-top_level_router = APIRouter(prefix="{prefix}/projects".format(prefix=settings.API_PREFIX), tags=["Projects"])
+team_nested_router = APIRouter(prefix=settings.API_PREFIX + "/teams/{team_id}/projects", tags=["Projects"])
+top_level_router = APIRouter(prefix=settings.API_PREFIX + "/projects", tags=["Projects"])
 
 
 @team_nested_router.post(

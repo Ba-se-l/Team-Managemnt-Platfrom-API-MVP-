@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
-from uuid import UUID as ID
+
 
 from src.database import TaskPriority, TaskStatus
 
@@ -10,7 +10,7 @@ class CreateTaskRequest(BaseModel):
     description: str = Field(..., min_length=10, max_length=500)
     priority: TaskPriority = Field(default=TaskPriority.MEDIUM)
     deadline: datetime | None = Field(default=None)
-    assignee_to_id: ID | None = Field(default=None)
+    assignee_to_id: int | None = Field(default=None)
 
 class UpdateTasksRequest(BaseModel):
 
@@ -19,22 +19,22 @@ class UpdateTasksRequest(BaseModel):
     status: TaskStatus | None = Field(default=None)
     priority: TaskPriority | None = Field(default=None)
     deadline: datetime | None = Field(default=None)
-    assignee_to_id: ID | None = Field(default=None)
+    assignee_to_id: int | None = Field(default=None)
 
 class TaskResponse(BaseModel):
 
     # To enable ORM validate -> ModelClass.model_validate(orm_instance)
     model_config = ConfigDict(from_attributes=True)
 
-    id: ID
+    id: int
     title: str
     description: str
     status: TaskStatus
     priority: TaskPriority
     deadline: datetime | None
     is_active: bool
-    creator_id: ID | None
-    assignee_to_id: ID | None
-    project_id: ID
+    creator_id: int | None
+    assignee_to_id: int | None
+    project_id: int
     created_at: datetime
     updated_at: datetime

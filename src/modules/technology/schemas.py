@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime
-from uuid import UUID as ID
+
 
 
 class CreateTechnologyRequest(BaseModel):
@@ -22,7 +22,7 @@ class TechnologyResponse(BaseModel):
     # To enable ORM validate -> ModelClass.model_validate(orm_instance)
     model_config = ConfigDict(from_attributes=True)
 
-    id: ID
+    id: int
     name: str
     description: str | None
     documentation_url: str | None

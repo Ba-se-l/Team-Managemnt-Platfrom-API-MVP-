@@ -93,7 +93,6 @@ async def register_user(schema: RegisterRequest, session: AsyncSession) -> User:
     hashed_password = hash_password(plain_password=schema.password)
 
     now = datetime.now(timezone.utc)
-    trial_end = now + timedelta(days=settings.TRIAL_DAYS) 
 
     # Step 3: Build the ORM model
     orm_model = User(

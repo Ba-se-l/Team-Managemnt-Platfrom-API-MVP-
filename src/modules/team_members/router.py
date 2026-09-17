@@ -16,7 +16,8 @@ from src.modules.user import User
 from .schemas import AddMemberRequest, UpdateMemberRoleRequest, MemberResponse
 from . import service
 
-router = APIRouter(prefix="{prefix}/teams/{team_id}/members".format(prefix=settings.API_PREFIX), tags=["Team Members"])
+router = APIRouter(prefix=settings.API_PREFIX + "/teams/{team_id}/members", tags=["Team Members"])
+
 
 
 @router.post(

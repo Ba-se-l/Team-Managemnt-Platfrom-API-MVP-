@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from src.modules.team_members import TeamMember
     from src.modules.project import Project
     from src.modules.task import Task
-
+    from src.modules.auth import RefreshSession
 
 class User(Base, CreatedAtUpdatedAtMixin):
     __tablename__ = 'users'
@@ -78,6 +78,12 @@ class User(Base, CreatedAtUpdatedAtMixin):
         foreign_keys='Task.assignee_to_id'
     )
 
+
+    refresh_sessions: Mapped[list["RefreshSession"]] = relationship(
+        'RefreshSession',
+        back_populates='user',
+        foreign_keys='RefreshSession.user_id'
+    )
 
     def __repr__(self):
         return f"User(id={self.id}, name={self.name}, email={self.email})"

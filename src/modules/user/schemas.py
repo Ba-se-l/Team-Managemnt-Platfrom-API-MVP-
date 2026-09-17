@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict, Field, EmailStr
 from datetime import datetime
-from uuid import UUID as ID
+
 
 from src.database import UserStatus, JobTitle
 
@@ -49,7 +49,7 @@ class UserResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
-    id: ID
+    id: int
     name: str
     email: str
     is_active: bool

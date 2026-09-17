@@ -62,7 +62,7 @@ class Task(Base, CreatedAtUpdatedAtMixin):
     )
 
 
-    project_id: Mapped[ID] = mapped_column(ForeignKey('projects.id', ondelete='CASCADE'))
+    project_id: Mapped[int] = mapped_column(ForeignKey('projects.id', ondelete='CASCADE'))
 
     project: Mapped['Project'] = relationship(
         'Project',

@@ -17,8 +17,8 @@ from src.modules.user import User
 from .schemas import CreateTaskRequest, UpdateTasksRequest, TaskResponse
 from . import service
 
-project_nested_router = APIRouter(prefix="{prefix}/projects/{project_id}/tasks".format(prefix=settings.API_PREFIX), tags=["Tasks"])
-top_level_router = APIRouter(prefix="{prefix}/tasks".format(prefix=settings.API_PREFIX), tags=["Tasks"])
+project_nested_router = APIRouter(prefix= settings.API_PREFIX + "/projects/{project_id}/tasks", tags=["Tasks"])
+top_level_router = APIRouter(prefix= settings.API_PREFIX + "/tasks", tags=["Tasks"])
 
 
 @project_nested_router.post(

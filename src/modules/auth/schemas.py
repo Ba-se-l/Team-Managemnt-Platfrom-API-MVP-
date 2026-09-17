@@ -13,13 +13,6 @@ class RegisterRequest(BaseModel):
     password: str = Field(..., min_length=8, max_length=100)
     """The user's plain-text password. Will be hashed before storage."""
 
-    device_fingerprint: str = Field(
-        ...,
-        min_length=1,
-        max_length=200,
-        examples=['DEVICE_ID']
-    )
-    """Client-provided device identifier for metadata tracking."""
 
     @field_validator('email', mode='before')
     @classmethod
